@@ -1,4 +1,10 @@
 import React from "react";
-import { Category } from "./components/Category";
+import { ListOfCategories } from "./components/ListOfCategoryes";
+import { GlobalStyle } from "./GlobalStyles";
 
-export const App = () => <Category />;
+export const App = () => (
+  <div>
+    <GlobalStyle />
+    <ListOfCategories />
+  </div>
+);
