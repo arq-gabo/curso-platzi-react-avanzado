@@ -1,29 +1,49 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const WebpackPwaManifestPlugin = require("webpack-pwa-manifest");
-const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const WebpackPwaManifestPlugin = require('webpack-pwa-manifest')
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin')
+
+const path = require('path')
 
 module.exports = {
   output: {
-    filename: "app.bundle.js",
-    publicPath: "/",
+    filename: 'app.bundle.js',
+    publicPath: '/'
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html",
+      template: 'src/index.html'
     }),
     new WebpackPwaManifestPlugin({
-      name: "PetGram Tu App de Fotos de Mascotas",
-      shortname: "Petgram",
-      description: "Aqui puedes encontrar fotos de mascotas bonitas",
-      background_color: "#fff",
-      theme_color: "#b1a",
+      name: 'Petgram - Tu app de ftoos de mascotas',
+      shortname: 'Petgram ðŸ¶',
+      description: 'Con Petgram puedes encontrar fotos de animales domÃ©sticos my fÃ¡cilmente',
+      background_color: '#fff',
+      theme_color: '#b1a',
       icons: [
         {
-          src: path.resolve("src/assets/icon.png"),
-          size: [96, 128, 192, 256, 384, 512],
-        },
-      ],
+          src: path.resolve('src/assets/icon.png'),
+          sizes: [96, 128, 192, 256, 384, 512]
+        }
+      ]
     }),
+    new WorkboxWebpackPlugin.GenerateSW({
+      runtimeCaching: [
+        {
+          urlPattern: new RegExp('https://(res.cloudinary.com|images.unsplash.com)'),
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'images'
+          }
+        },
+        {
+          urlPattern: new RegExp('https://petgram-server-gabo-gug9f5h15.vercel.app'),
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'api'
+          }
+        }
+      ]
+    })
   ],
   module: {
     rules: [
@@ -31,12 +51,13 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
-          },
-        },
-      },
-    ],
-  },
-};
+            plugins: ['@babel/plugin-syntax-dynamic-import'],
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
+        }
+      }
+    ]
+  }
+}
