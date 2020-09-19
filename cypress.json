@@ -1,0 +1,6 @@
+{
+    "baseUrl": "https://petgram.arq-gabo.vercel.app/",
+    "chromeWebSecurity": false,
+    "viewportWidth": 500,
+    "viewpoerHeight": 800
+}
